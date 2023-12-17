@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tournaments{% endblock %}
+
+{% block body %}
+<!--Main Navigation-->
+<header>
+    {{ include('organisms/side_nav.html.twig', { games: games }) }}
+    {% include 'organisms/top_nav.html.twig' %}
+</header>
+<!--Main Navigation-->
+
+<!--Main layout-->
+<main style="margin-top: 58px">
+    <div class="container">
+        <div class="p-5 !pl-[260px] text-center text-white" id="content">
+{#                {{ include('organisms/single_bracket.html.twig', {
+                matches: matches
+            }) }}#}
+            {{ include('organisms/games_menu.html.twig', { games: games }) }}
+        </div>
+    </div>
+</main>
+    <!--Main layout-->
+
+    <!--Footer-->
+<footer></footer>
+<!--Footer-->
+{% endblock %}

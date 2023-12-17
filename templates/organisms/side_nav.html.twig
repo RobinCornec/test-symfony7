@@ -1,0 +1,36 @@
+<nav
+    id="sidenav-1"
+    class="fixed left-0 top-0 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] dark:bg-zinc-800 xl:data-[te-sidenav-hidden='false']:translate-x-0"
+    data-te-sidenav-init
+    data-te-sidenav-hidden="false"
+    data-te-sidenav-mode-breakpoint-over="0"
+    data-te-sidenav-mode-breakpoint-side="xl"
+    data-te-sidenav-content="#content"
+    data-te-sidenav-accordion="true"
+>
+
+    <a
+            class="mb-3 flex items-center justify-center py-6 outline-none"
+            href="#!"
+            data-te-ripple-init
+            data-te-ripple-color="primary">
+        <img
+                id="te-logo"
+                class="mr-2 w-8"
+                src="https://tw-elements.com/img/logo.png"
+                alt="TE Logo"
+                draggable="false" />
+        <span class="text-white">TW elements</span>
+    </a>
+
+    <ul class="relative m-0 list-none px-[0.2rem]" data-te-sidenav-menu-ref>
+        {% for game in games %}
+        <li class="relative">
+            {{ include('molecules/menu.html.twig', {
+                name: game.name,
+                link: '#!'
+            }) }}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>

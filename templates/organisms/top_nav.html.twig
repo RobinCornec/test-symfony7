@@ -1,0 +1,32 @@
+<!-- Navbar -->
+<nav id="main-navbar" class="fixed left-0 right-0 top-0 flex w-full flex-nowrap items-center justify-between bg-white py-[0.6rem] text-gray-500 shadow-lg hover:text-gray-700 focus:text-gray-700 dark:bg-zinc-700 lg:flex-wrap lg:justify-start xl:pl-60" data-te-navbar-ref="">
+    <!-- Container wrapper -->
+    <div class="flex w-full flex-wrap items-center justify-between px-4">
+        <!-- Toggler -->
+        {{ include ('atoms/burger_button.html.twig', {
+            classes: 'block border-0 bg-transparent px-2.5 text-gray-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 xl:hidden',
+            html_attributes: {
+                'data-te-sidenav-toggle-ref': '',
+                'data-te-target': '#sidenav-1',
+                'aria-controls': '#sidenav-1',
+                'aria-haspopup': 'true',
+                'aria-expanded': 'true'
+            }
+        }) }}
+
+        <!-- Search form -->
+        <div class="relative ml-4 mr-auto flex flex-wrap items-stretch xl:mx-0" data-form-type="">
+            {{ include('molecules/formatted_input.html.twig', {
+                type: 'search',
+                icon: 'fa-solid fa-magnifying-glass',
+                html_attributes: {
+                    placeholder: "Search",
+                }
+            }) }}
+        </div>
+        <!-- Local selection -->
+        {% include 'organisms/language_organism.html.twig' %}
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

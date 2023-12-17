@@ -1,0 +1,3 @@
+game_cards:
+  ongoing_tournaments: 'Tournois en cours : %quantity%'
+  see_tournaments: 'Voir les tournois'

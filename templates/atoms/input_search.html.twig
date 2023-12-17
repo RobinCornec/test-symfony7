@@ -1,0 +1,9 @@
+<input
+    type="search"
+    {% if html_attributes is defined %}
+        {% for attr, value in html_attributes %}
+            {{ attr }}="{{ value }}"
+        {% endfor %}
+    {% endif %}
+    class="focus:shadow-te-blue relative m-0 inline-block w-[1%] min-w-[225px] flex-auto rounded border border-solid border-gray-300 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition duration-300 ease-in-out focus:border-blue-600 focus:text-gray-700 focus:outline-none dark:text-gray-200 dark:placeholder:text-gray-200"
+>

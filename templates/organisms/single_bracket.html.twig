@@ -1,0 +1,26 @@
+<!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
+<div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+                <table class="min-w-full text-left text-sm font-light">
+                    <thead class="border-b font-medium dark:border-neutral-500">
+                    <tr>
+                        <th scope="col" class="px-6 py-4">#</th>
+                        <th scope="col" class="px-6 py-4">Opponent 1</th>
+                        <th scope="col" class="px-6 py-4">Opponent 2</th>
+                        <th scope="col" class="px-6 py-4">Results</th>
+                    </tr>
+                    </thead>
+                    <tbody id="list_matches" {{ turbo_stream_listen('list_matches') }}>
+                    {% for match in  matches %}
+                        {{ include('molecules/single_bracket_line.html.twig', {
+                            match: match
+                        }) }}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

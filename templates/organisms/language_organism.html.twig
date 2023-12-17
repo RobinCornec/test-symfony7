@@ -1,0 +1,30 @@
+<!-- Right links -->
+<ul class="relative flex items-center">
+    <!-- Icon dropdown -->
+    <li class="relative" data-te-dropdown-ref>
+        <a class="mr-4 flex items-center text-gray-500 hover:text-gray-700 focus:text-gray-700"
+           href="#"
+           id="navbarDropdown"
+           role="button"
+           data-te-dropdown-toggle-ref
+           aria-expanded="false"
+        >
+            {% if app.request.locale is defined %}
+                {% include 'atoms/' ~ app.request.locale ~ '_icon.html.twig' %}
+            {% else %}
+                {% include 'atoms/en_icon.html.twig' %}
+            {% endif %}
+        </a>
+        <ul class="absolute left-auto right-0 z-[1000] float-left m-0 mt-1 hidden min-w-[10rem] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-zinc-700 [&[data-te-dropdown-show]]:block"
+            aria-labelledby="navbarDropdown"
+            data-te-dropdown-menu-ref
+        >
+            <li>
+                {{ include('molecules/language_molecule.html.twig', { language: 'en' }) }}
+            </li>
+            <li>
+                {{ include('molecules/language_molecule.html.twig', { language: 'fr' }) }}
+            </li>
+        </ul>
+    </li>
+</ul>
