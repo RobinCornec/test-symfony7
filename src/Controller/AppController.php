@@ -21,7 +21,7 @@ class AppController extends AbstractController
             ],
             [
                 'id' => 0,
-                'name' => 'Rocket Leagues',
+                'name' => 'Rocket League',
                 'ongoing_tournaments' => 3,
             ],
         ];
@@ -41,7 +41,7 @@ class AppController extends AbstractController
 //                'opponent2' => 'Team 2',
 //                'result' => '2-0',
 //            ],
-//            [
+//
 //                'id' => 2,
 //                'opponent1' => 'Team 3',
 //                'opponent2' => 'Team 4',

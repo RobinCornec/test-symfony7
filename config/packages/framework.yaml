@@ -4,6 +4,15 @@ framework:
     #csrf_protection: true
     handle_all_throwables: true
 
+    http_client:
+        scoped_clients:
+            # only requests matching scope will use these options
+            pandascore.client:
+                base_uri: '%env(PANDA_SCORE_URL)%'
+                headers:
+                    Accept: 'application/json'
+                    Authorization: 'Bearer %env(PANDA_SCORE_KEY)%'
+
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
     session:
