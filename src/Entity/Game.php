@@ -9,7 +9,6 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\Uid\UuidV7 as Uuid;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
-#[Broadcast]
 class Game extends AbstractEntity
 {
     #[ORM\Id]
@@ -27,6 +26,24 @@ class Game extends AbstractEntity
     #[ORM\Column(length: 31, unique: true)]
     #[Slug(fields: ['name'])]
     private ?string $slug = null;
+
+    #[ORM\Column()]
+    private bool $active = false;
+
+    /**
+     * @param int|null $pandaScoreId
+     * @param string|null $name
+     * @param string|null $slug
+     * @param bool $active
+     */
+    public function __construct(?int $pandaScoreId = null, ?string $name = null, ?string $slug = null, bool $active = false)
+    {
+        $this->pandaScoreId = $pandaScoreId;
+        $this->name = $name;
+        $this->slug = $slug;
+        $this->active = $active;
+    }
+
 
     public function getId(): ?Uuid
     {
@@ -75,4 +92,15 @@ class Game extends AbstractEntity
 
         return $this;
     }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
 }

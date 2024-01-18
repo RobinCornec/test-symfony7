@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use App\Entity\Game;
+use App\Repository\GameRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,6 +25,8 @@ class HydrateGameCommand extends Command
 {
     public function __construct(
         private readonly HttpClientInterface $pandascoreClient,
+        private readonly GameRepository $gameRepository,
+        private readonly EntityManagerInterface $entityManager
     ) {
         parent::__construct();
     }
@@ -43,17 +48,38 @@ class HydrateGameCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $response = $this->pandascoreClient->request(
-            'GET',
-            '/videogames'
-        );
+        try {
+            $response = $this->pandascoreClient->request(
+                'GET',
+                '/videogames'
+            );
 
-        foreach (\json_decode($response->getContent()) as $game) {
-            dump($game);
+            $dbGames = $this->gameRepository->findAll();
+            $dbPsIdx = [];
+
+            foreach ($dbGames as $dbGame) {
+                $dbPsIdx[] = $dbGame->getPandaScoreId();
+            }
+
+            foreach (\json_decode($response->getContent(), true) as $PsGame) {
+                if (!\in_array($PsGame['id'], $dbPsIdx)) {
+                    $newGame = new Game(
+                        $PsGame['id'],
+                        $PsGame['name'],
+                        $PsGame['slug'],
+                    );
+
+                    $this->entityManager->persist($newGame);
+                }
+            }
+
+            $this->entityManager->flush();
+
+            return Command::SUCCESS;
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+
+            return Command::FAILURE;
         }
-
-        //Check if exists in bdd else create new entity Game :)
-
-        return Command::SUCCESS;
     }
 }

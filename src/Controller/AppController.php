@@ -2,29 +2,20 @@
 
 namespace App\Controller;
 
+use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
     #[Route('/app', name: 'app')]
-    public function app(): Response
+    public function app(GameRepository $gameRepository): Response
     {
-        $games = [
-            [
-                'id' => 0,
-                'name' => 'League of Legends',
-                'ongoing_tournaments' => 2,
-            ],
-            [
-                'id' => 0,
-                'name' => 'Rocket League',
-                'ongoing_tournaments' => 3,
-            ],
-        ];
+        $games = $gameRepository->findBy([
+            'active' => true
+        ]);
+
 
         return $this->render('app.html.twig', [
             'games' => $games,

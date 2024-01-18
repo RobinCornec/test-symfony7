@@ -16,4 +16,13 @@ class AbstractEntity
     #[Timestampable(on: "update")]
     protected DateTime $updatedAt;
 
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
 }
