@@ -11,7 +11,7 @@
 
     <a
             class="mb-3 flex items-center justify-center py-6 outline-none"
-            href="#!"
+            href="{{ path('app') }}"
             data-te-ripple-init
             data-te-ripple-color="primary">
         <img
@@ -28,7 +28,7 @@
         <li class="relative">
             {{ include('molecules/menu.html.twig', {
                 name: game.name,
-                link: '#!'
+                link: path('series', {'id': game.id})
             }) }}
         </li>
         {% endfor %}

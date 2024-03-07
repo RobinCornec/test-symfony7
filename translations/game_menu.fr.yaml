@@ -1,3 +1,10 @@
 game_cards:
+  breadcrumbs: 'Accueil'
   ongoing_tournaments: 'Tournois en cours : %quantity%'
-  see_tournaments: 'Voir les tournois'
+  see_series: 'Voir les tournois'
+
+series_cards:
+  breadcrumbs: 'Tournois'
+  ongoing_matches: '%current% matchs en cours'
+  upcoming_matches: '%current% matchs à venir'
+  see_matches: 'Voir les matchs'

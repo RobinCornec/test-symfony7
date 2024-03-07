@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\GameRepository;
+use App\Repository\LeagueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 use Symfony\Component\Uid\UuidV7 as Uuid;
 
-#[ORM\Entity(repositoryClass: GameRepository::class)]
-class Game extends AbstractEntity
+#[ORM\Entity(repositoryClass: LeagueRepository::class)]
+class League extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -22,25 +22,22 @@ class Game extends AbstractEntity
     private int $pandaScoreId;
 
     #[ORM\Column(length: 127)]
-    private ?string $name;
+    private ?string $name = null;
 
-    #[ORM\Column(length: 127, unique: true)]
+    #[ORM\Column(length: 31, unique: true)]
     #[Slug(fields: ['name'])]
-    private ?string $slug;
+    private ?string $slug = null;
 
-    #[ORM\Column]
-    private bool $active;
+    #[ORM\Column()]
+    private bool $active = false;
 
-    /**
-     * @var Collection<int, League>
-     */
-    #[ORM\OneToMany(mappedBy: 'game', targetEntity: League::class)]
-    private Collection $leagues;
+    #[ORM\ManyToOne(targetEntity: Game::class, inversedBy: 'id')]
+    private Game $game;
 
     /**
-     * @var Collection<int,Serie>
+     * @var Collection<int, Serie>
      */
-    #[ORM\OneToMany(mappedBy: 'game', targetEntity: Serie::class)]
+    #[ORM\OneToMany(mappedBy: 'league', targetEntity: Serie::class)]
     private Collection $series;
 
     /**
@@ -48,14 +45,15 @@ class Game extends AbstractEntity
      * @param string|null $name
      * @param string|null $slug
      * @param bool $active
+     * @param Game $game
      */
-    public function __construct(int $pandaScoreId, ?string $name = null, ?string $slug = null, bool $active = false)
+    public function __construct(int $pandaScoreId, ?string $name, ?string $slug, bool $active, Game $game)
     {
         $this->pandaScoreId = $pandaScoreId;
         $this->name = $name;
         $this->slug = $slug;
         $this->active = $active;
-        $this->leagues = new ArrayCollection();
+        $this->game = $game;
         $this->series = new ArrayCollection();
     }
 
@@ -118,20 +116,21 @@ class Game extends AbstractEntity
         $this->active = $active;
     }
 
-    /**
-     * @return Collection<int, League>
-     */
-    public  function getLeagues(): Collection
+    public function getGame(): Game
     {
-        return $this->leagues;
+        return $this->game;
+    }
+
+    public function setGame(Game $game): void
+    {
+        $this->game = $game;
     }
 
     /**
      * @return Collection<int, Serie>
      */
-    public  function getSeries(): Collection
+    public function getSeries(): Collection
     {
         return $this->series;
     }
-
 }

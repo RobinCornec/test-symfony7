@@ -3,8 +3,10 @@
 namespace App\Command;
 
 use App\Entity\Game;
+use App\PandaScore\Api\GameApi;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,18 +15,18 @@ use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use function in_array;
 
 #[AsCommand(
-    name: 'hydrate:game',
+    name: 'hydrate:games',
     description: 'Get all games from api',
     aliases: ['h:g'],
     hidden: false
 )]
-class HydrateGameCommand extends Command
+class HydrateGamesCommand extends Command
 {
     public function __construct(
-        private readonly HttpClientInterface $pandascoreClient,
+        private readonly GameApi $gameApi,
         private readonly GameRepository $gameRepository,
         private readonly EntityManagerInterface $entityManager
     ) {
@@ -34,25 +36,22 @@ class HydrateGameCommand extends Command
     protected function configure(): void
     {
         // the command help shown when running the command with the "--help" option
-        $this->setHelp('This command GET PandaScore API and hydrate DB');
+        $this->setHelp('This command GET PandaScore Games API and hydrate DB');
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
-     * @throws TransportExceptionInterface
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $response = $this->pandascoreClient->request(
-                'GET',
-                '/videogames'
-            );
+            $psGames = $this->gameApi->getAll();
 
             $dbGames = $this->gameRepository->findAll();
             $dbPsIdx = [];
@@ -61,12 +60,12 @@ class HydrateGameCommand extends Command
                 $dbPsIdx[] = $dbGame->getPandaScoreId();
             }
 
-            foreach (\json_decode($response->getContent(), true) as $PsGame) {
-                if (!\in_array($PsGame['id'], $dbPsIdx)) {
+            foreach ($psGames as $psGame) {
+                if (!in_array($psGame->id, $dbPsIdx)) {
                     $newGame = new Game(
-                        $PsGame['id'],
-                        $PsGame['name'],
-                        $PsGame['slug'],
+                        $psGame->id,
+                        $psGame->name,
+                        $psGame->slug,
                     );
 
                     $this->entityManager->persist($newGame);
@@ -76,7 +75,7 @@ class HydrateGameCommand extends Command
             $this->entityManager->flush();
 
             return Command::SUCCESS;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             echo $exception->getMessage();
 
             return Command::FAILURE;

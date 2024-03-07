@@ -14,10 +14,9 @@
 <main style="margin-top: 58px">
     <div class="container">
         <div class="p-5 !pl-[260px] text-center text-white" id="content">
-{#                {{ include('organisms/single_bracket.html.twig', {
-                matches: matches
-            }) }}#}
-            {{ include('organisms/games_menu.html.twig', { games: games }) }}
+            <turbo-frame id="tf-content">
+                {{ include('organisms/games_menu.html.twig', { games: games }) }}
+            </turbo-frame>
         </div>
     </div>
 </main>

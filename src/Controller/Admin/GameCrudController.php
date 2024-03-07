@@ -36,5 +36,4 @@ class GameCrudController extends AbstractCrudController
                 ->hideOnForm(),
         ];
     }
-
 }
