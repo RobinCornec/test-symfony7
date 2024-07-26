@@ -102,8 +102,7 @@ class HydrateSeriesCommand extends Command
             $this->entityManager->flush();
             return Command::SUCCESS;
         } catch (Exception $exception) {
-            echo $exception->getMessage();
-
+            dd($exception);
             return Command::FAILURE;
         }
     }

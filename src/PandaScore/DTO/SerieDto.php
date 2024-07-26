@@ -19,7 +19,7 @@ readonly class SerieDto implements DtoInterface
      * @param string|null $name
      * @param string|null $season
      * @param string $slug
-     * @param string|null $videoGameTitle
+     * @param object|null $videoGameTitle
      * @param int|null $winnerId
      * @param WinnerTypeEnum|null $winnerType
      * @param int|null $year
@@ -43,7 +43,7 @@ readonly class SerieDto implements DtoInterface
         public ?string $season,
         #[Assert\NotNull()]
         public string $slug,
-        public ?string $videoGameTitle,
+        public ?object $videoGameTitle,
         public ?int $winnerId,
         public ?WinnerTypeEnum $winnerType,
         #[Assert\Positive()]

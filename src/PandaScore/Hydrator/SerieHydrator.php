@@ -3,6 +3,7 @@
 namespace App\PandaScore\Hydrator;
 
 use App\PandaScore\DTO\SerieDto;
+use App\PandaScore\Enum\WinnerTypeEnum;
 use DateTimeImmutable;
 use Exception;
 use Generator;
@@ -34,6 +35,7 @@ readonly class SerieHydrator implements HydratorInterface
         ResponseInterface $response,
     ): Generator {
         foreach (json_decode($response->getContent(), true) as $psSerie) {
+            dump($psSerie['winner_type']);
             $serieDTO = new SerieDto(
                 new DateTimeImmutable($psSerie['begin_at']),
                 new DateTimeImmutable($psSerie['end_at']),
@@ -44,9 +46,9 @@ readonly class SerieHydrator implements HydratorInterface
                 $psSerie['name'],
                 $psSerie['season'],
                 $psSerie['slug'],
-                $psSerie['videogame_title'],
+                (object) $psSerie['videogame_title'],
                 $psSerie['winner_id'],
-                $psSerie['winner_type'],
+                WinnerTypeEnum::from($psSerie['winner_type']),
                 $psSerie['year'],
                 (object) $psSerie['league'],
                 (object) $psSerie['videogame'],

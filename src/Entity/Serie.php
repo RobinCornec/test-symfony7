@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation\Slug;
 use Symfony\Component\Uid\UuidV7 as Uuid;
 
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
-class Serie
+class Serie extends AbstractEntity
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -34,7 +34,7 @@ class Serie
     #[ORM\Column(nullable: true)]
     private ?int $winnerId;
 
-    #[ORM\Column(length: 127, nullable: true)]
+    #[ORM\Column(type: "string", enumType: WinnerTypeEnum::class)]
     private ?WinnerTypeEnum $winnerType;
 
     #[ORM\Column]
